@@ -36,8 +36,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <siddhi.version>5.1.7</siddhi.version>
+    <siddhi.io.http>2.1.2</siddhi.io.http>
+    <siddhi.map.json>5.0.4</siddhi.map.json>
     <log4j.version>1.2.17.wso2v1</log4j.version>
-    <testng.version>6.9.10</testng.version>
   </properties>
 
   <dependencies>
@@ -52,9 +53,24 @@
       <version>${siddhi.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.siddhi</groupId>
+      <artifactId>siddhi-query-compiler</artifactId>
+      <version>${siddhi.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.siddhi</groupId>
+      <artifactId>siddhi-annotations</artifactId>
+      <version>${siddhi.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.siddhi.extension.io.http</groupId>
       <artifactId>siddhi-io-http</artifactId>
-      <version>2.1.2</version>
+      <version>${siddhi.io.http}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.siddhi.extension.map.json</groupId>
+      <artifactId>siddhi-map-json</artifactId>
+      <version>${siddhi.map.json}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.log4j.wso2</groupId>
