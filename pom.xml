@@ -29,7 +29,7 @@
 
   <groupId>io.siddhi.sample.mock.data</groupId>
   <artifactId>siddhi-mock-data-generator</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>Siddhi-mock-data-generator</name>
 
 
