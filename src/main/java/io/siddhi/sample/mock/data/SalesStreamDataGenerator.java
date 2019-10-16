@@ -28,6 +28,9 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
+import java.util.TimeZone;
 
 /**
  * Generate data for http source attached to ,
@@ -36,6 +39,13 @@ import java.util.ArrayList;
 public class SalesStreamDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SalesStreamDataGenerator.class);
     private static final String URL_TEMPLATE = "http://0.0.0.0:{{port}}/sales";
+    private static final String[] category = {"Electronics", "Toys", "Clothes", "Accessories"};
+    private static final String[] electronicProducts = {"Phone", "Earphone", "Ear-buds", "Tablet", "Watch", "Camera"};
+    private static final String[] toysProducts = {"Building-Blocks", "Pulshie", "Softball", "Rattle", "Play-doh"};
+    private static final String[] clothesProducts = {"Shirt", "Trousers", "Skirt", "Blouse", "Shorts"};
+    private static final String[] accessoriesProducts = {"Earring", "Watch", "Necklace", "Hairband", "Clips"};
+    private static final String[] sellerNames = {"Harry", "Ron", "Harmonie", "Fred", "George", "Malfoy", "Dumbledore",
+                                                "Lucius", "Molly", "Lupin"};
 
     private String sinkURL;
     private ArrayList<Object[]> generatedEvents;
@@ -57,8 +67,54 @@ public class SalesStreamDataGenerator {
             return;
         }
 
-        generatedEvents.add(new Object[]{System.currentTimeMillis(), "clothes", "shirt", "seller1", 1});
-        generatedEvents.add(new Object[]{System.currentTimeMillis(), "clothes", "blouse", "seller1", 2});
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        calendar.set(year, month, day, hour, 0);
+
+        long gmtTimestamp = calendar.getTimeInMillis();
+        Random categoryRandom = new Random();
+        Random productRandom = new Random();
+        Random sellerRandom = new Random();
+
+        // 5 days before
+        long mockDataStart = gmtTimestamp - 432000000;
+
+
+        int eventCount = 0;
+        while (mockDataStart <= gmtTimestamp) {
+            int categoryIndex = categoryRandom.nextInt(4);
+            int productIndex = productRandom.nextInt(5);
+            int sellerIndex = sellerRandom.nextInt(10);
+
+            String sellerName = sellerNames[sellerIndex];
+            String categoryValue = category[categoryIndex];
+            String productValue;
+            switch (categoryIndex) {
+                case 0:
+                    productValue = electronicProducts[productIndex];
+                    break;
+                case 1:
+                    productValue = toysProducts[productIndex];
+                    break;
+                case 2:
+                    productValue = clothesProducts[productIndex];
+                    break;
+                case 3:
+                    productValue = accessoriesProducts[productIndex];
+                    break;
+                default:
+                    productValue = "";
+            }
+
+            generatedEvents.add(
+                        new Object[]{mockDataStart, categoryValue, productValue, sellerName, (productIndex + 1) * 10});
+            eventCount++;
+            mockDataStart = mockDataStart + 3600000;
+            LOGGER.info("Event '" + eventCount + "' generated successfully");
+        }
         LOGGER.info("Generate Data successfully! ");
     }
 
@@ -67,6 +123,8 @@ public class SalesStreamDataGenerator {
         if (this.generatedEvents.size() == 0) {
             return;
         }
+
+        LOGGER.info("Sending data to '" + this.sinkURL + "'.");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -102,7 +160,7 @@ public class SalesStreamDataGenerator {
         siddhiAppRuntime.shutdown();
         siddhiManager.shutdown();
 
-        LOGGER.info("Send success! " + this.sinkURL);
+        LOGGER.info("Successfully send data!");
     }
 
 }
