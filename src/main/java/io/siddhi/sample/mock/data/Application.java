@@ -30,12 +30,12 @@ public class Application {
 
         LOGGER.info("Mock generator Started!");
 
-        String port = "8080";
+        String uri = "0.0.0.0:8080";
         if (args.length > 0) {
-            port = args[0];
+            uri = args[0];
         }
 
-        SalesStreamDataGenerator salesStreamDataGenerator = new SalesStreamDataGenerator(port);
+        SalesStreamDataGenerator salesStreamDataGenerator = new SalesStreamDataGenerator(uri);
         salesStreamDataGenerator.generateData();
         salesStreamDataGenerator.sendData();
 

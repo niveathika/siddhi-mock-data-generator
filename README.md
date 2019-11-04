@@ -11,11 +11,10 @@ define stream SalesStream(timestamp long, categoryName string, productName strin
 ## How to run
 
 ```console
-java -jar siddhi-mock-data-generator-1.0.0.jar
+java -jar siddhi-mock-data-generator-2.0.0.jar
 ```
 OR
 
 ```
-java -jar siddhi-mock-data-generator-1.0.0.jar 8006
-
+java -jar siddhi-mock-data-generator-2.0.0.jar localhost:8080
 ```

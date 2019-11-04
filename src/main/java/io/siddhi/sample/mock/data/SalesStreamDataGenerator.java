@@ -38,7 +38,7 @@ import java.util.TimeZone;
  */
 public class SalesStreamDataGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SalesStreamDataGenerator.class);
-    private static final String URL_TEMPLATE = "http://0.0.0.0:{{port}}/sales";
+    private static final String URL_TEMPLATE = "http://{{uri}}/sales";
     private static final String[] category = {"Electronics", "Toys", "Clothes", "Accessories"};
     private static final String[] electronicProducts = {"Phone", "Earphone", "Ear-buds", "Tablet", "Watch", "Camera"};
     private static final String[] toysProducts = {"Building-Blocks", "Pulshie", "Softball", "Rattle", "Play-doh"};
@@ -51,9 +51,9 @@ public class SalesStreamDataGenerator {
     private ArrayList<Object[]> generatedEvents;
     private boolean isConfigValid = true;
 
-    SalesStreamDataGenerator(String port) {
+    SalesStreamDataGenerator(String uri) {
         try {
-            String url = URL_TEMPLATE.replace("{{port}}", port);
+            String url = URL_TEMPLATE.replace("{{uri}}", uri);
             this.sinkURL = new URL(url).toString();
             generatedEvents = new ArrayList<>();
         } catch (MalformedURLException e) {
